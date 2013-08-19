@@ -11,7 +11,9 @@ define(['./array','./object','./lang'],function(ArrUtil, ObjUtil,L){
         //console.log(partialArgs);
         return function(){
             var args = ArrUtil.toArray(partialArgs);
-            ArrUtil.fillInOrder(args,ArrUtil.toArray(arguments),null,false);
+            //the argmuments will fill in the 'undefined' placeholder in order,
+            //and the extras will append to the tail.
+            ArrUtil.fillInOrder(args,ArrUtil.toArray(arguments),undefined,true);
            // console.log(args);
             return fn.apply(this,args);
         
@@ -37,7 +39,7 @@ define(['./array','./object','./lang'],function(ArrUtil, ObjUtil,L){
         }
     };
     var inherits = function(ctor,superCtor) {
-        ctor._super_ = superCtor;
+        ctor._super_ = superCtor.prototype;// use ctor._super_[fn] to use parent's fn
         var _proto_ = ctor.prototype;
         ctor.prototype = ObjUtil.create(superCtor.prototype,{
             constructor : {
