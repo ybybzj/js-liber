@@ -1,7 +1,7 @@
 module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-exec');
 	grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+        	pkg: grunt.file.readJSON('package.json'),
 		exec:{
 			build: {
 				command : 'node node_modules/requirejs/bin/r.js -o build-config.js'
