@@ -4,16 +4,18 @@ module.exports = function(grunt){
         pkg: grunt.file.readJSON('package.json'),
 		exec:{
 			build: {
-				command : 'node node_modules/.bin/r.js -o build-config.js'
+				command : 'node node_modules/requirejs/bin/r.js -o build-config.js'
 			},
-            test: {
-                command : 'node_modules/.bin/mocha -u tdd'
-            },
-            clear: {
-                command : 'rm -rf build'
-            }
+            		test: {
+                		command : 'node_modules/.bin/mocha -u tdd'
+            		}
+		}
+	});
+	grunt.registerTask('clean', function(){
+		if(grunt.file.exsit('./build')){
+			grunt.file.delete('./build');
 		}
 	});
 
-	grunt.registerTask('default', ['exec:clear', 'exec:build']);
+	grunt.registerTask('default', ['clean', 'exec:build']);
 };
