@@ -1,21 +1,13 @@
 {
-  "name": "liber",
+  "name": "js-liber",
   "version": "0.0.1",
-  "description": "common lib for nodejs and browser, underscore fork",
-  "main": "build/liber-build.js",
+  "description": "common utilities for nodejs and browser",
+  "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha -u tdd"
+    "test": "echo \"no test\""
   },
-  "dependencies": {
-    "almond": "~0.2.5"
-    },
-  "devDependencies": {
-    "mocha": "latest",
-    "should": "latest",
-    "grunt": "~0.4.1",
-    "requirejs": "~2.1.5",
-    "grunt-exec": "~0.4.0"
-  },
+  "dependencies": {},
+  "devDependencies": {},
   "repository": "",
   "keywords": [
     "liber"
