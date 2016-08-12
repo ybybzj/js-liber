@@ -1,6 +1,6 @@
 {
   "name": "js-liber",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "common utilities for nodejs and browser",
   "main": "index.js",
   "scripts": {
