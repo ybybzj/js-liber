@@ -15,10 +15,12 @@ function type(o) {
   return tm == null ? 'unknown' : tm[1].toLowerCase();
 }
 
-['String', 'Function', 'Array', 'Undefined', 'Null', 'NaN', 'Object', 'RegExp', 'Arguments', 'Number'].forEach(function(name){
+['String', 'Function', 'Array', 'Undefined', 'Null', 'NaN', 'Object', 'RegExp', 'Arguments', 'Number', 'Boolean'].forEach(function(name){
   type['is' + name] = function(o){
     return type(o) === name.toLowerCase();
   };
 });
+
+type.isAny = function(){return true;};
 
 module.exports = type;

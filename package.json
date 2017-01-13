@@ -8,8 +8,9 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "repository": "",
+  "repository": "https://github.com/ybybzj/js-liber.git",
   "keywords": [
+    "js",
     "liber"
   ],
   "author": "ybybzj",

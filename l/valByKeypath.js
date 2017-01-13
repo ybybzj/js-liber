@@ -9,6 +9,9 @@ function _valByKeypath(kpath, o) {
   assert(typeof kpath === 'string', 'kpath should be a string!', TypeError);
   kpath = kpath.trim();
   if (kpath.length === 0) return o;
+  if(!type.isObject(o)){
+    o = Object(o);
+  }
   assert(Object(o) === o, 'o should be an object! ', TypeError);
   var paths = kpath.split('.'),
     i = 0;
@@ -25,8 +28,11 @@ function _valByKeypath(kpath, o) {
 }
 
 function _updateKeyPath(kpath, o, data, fn) {
+  if(!type.isObject(o)){
+    o = Object(o);
+  }
   assert(type(kpath) === 'string', 'kpath should be a string!', TypeError);
-  assert(type(o) === 'object', 'o should be an object!', TypeError);
+  assert(Object(o) === o, 'o should be an object!', TypeError);
   kpath = kpath.trim();
   if (kpath.length === 0) return;
   var paths = kpath.split('.'),
@@ -49,6 +55,7 @@ function _updateKeyPath(kpath, o, data, fn) {
 }
 
 function valByKeypath(kpath, o, data, fn) {
+  
   if (arguments.length < 3) {
     return _valByKeypath(kpath, o);
   } else {

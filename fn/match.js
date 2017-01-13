@@ -1,5 +1,5 @@
 var type = require('../type');
-var patternCheck = require('./_patternCheck');
+var checker = require('../checker');
 /**
  *
  *  usage:
@@ -22,7 +22,7 @@ function match(matchers, target) {
       return match(matchers, target);
     };
   }
-  if (!patternCheck(validMatchers, matchers)) {
+  if (!checker(validMatchers, matchers).isValid) {
     throw new Error('[match]:Invalid matchers! Given: ' + matchers);
   }
   var i = 0,
@@ -31,7 +31,7 @@ function match(matchers, target) {
   for (; i < l; i++) {
     checkResult = matchers[i][0](target);
 
-    if (!!checkResult) {
+    if (checkResult.isValid) {
       matchedIdx = i;
       break;
     }
@@ -41,7 +41,7 @@ function match(matchers, target) {
   }
   mapper = matchers[matchedIdx][1];
   return type('function', mapper) ?
-    mapper.apply(null, [].concat(target, checkResult)) : mapper;
+    mapper.apply(null, [].concat(target, checkResult.value)) : mapper;
 }
 
 match.when = when;
@@ -57,15 +57,11 @@ module.exports = match;
 function when( /*pattern1, pattern2*/ ) {
   var patterns = [].slice.call(arguments);
   if (patterns.length === 0) {
-    return function() {
+    return function Any() {
       return true;
     };
   }
-  return function _checker(target) {
-    return patterns.reduce(function(m, p) {
-      return m && patternCheck(p, target);
-    }, true);
-  };
+  return checker.and.apply(null, patterns);
 }
 
 //make a checker out of patterns,
@@ -74,23 +70,12 @@ when.or = function _when_or( /*pattern1, pattern2*/ ) {
   var patterns = [].slice.call(arguments);
 
   if (patterns.length === 0) {
-    return function() {
+    return function Any() {
       return true;
     };
   }
 
-  return function _checker_or(target) {
-    var i = 0,
-      l = patterns.length,
-      checkResult;
-    for (; i < l; i++) {
-      checkResult = patternCheck(patterns[i], target);
-      if (!!checkResult) {
-        return checkResult;
-      }
-    }
-    return false;
-  };
+  return checker.or.apply(null, patterns);
 };
 
 
@@ -101,6 +86,6 @@ function validMatchers(matchers) {
   }
 
   return matchers.every(function(matcher) {
-    return patternCheck([type.isFunction], matcher);
+    return checker([type.isFunction], matcher).isValid;
   });
 }

@@ -1,5 +1,5 @@
 // @ifdef DEBUG
-var patternCheck = require('./_patternCheck');
+var patternCheck = require('../checker');
 // @endif
 
 var t = require('../type');
@@ -236,8 +236,9 @@ function validateArgs(typeProto, checkPatterns, input, ctorName, ignoreLenCheck)
     if(checkPattern === undefined){
       checkPattern = typeProto.__$type$__;
     }
-    if (!patternCheck(checkPattern, v)) {
-      throw new Error('['+dtName+']input data at "' + k + '" is invalid! given: ' + v);
+    var checkRes = patternCheck(checkPattern, v);
+    if (checkRes.isValid === false) {
+      throw new Error('['+dtName+']input data at "' + k + '" is invalid! expected "' +checkRes.expected + '",' +(checkRes.path ? ('at input data\'s keypath "'+checkRes.path+'",') : '')+'but received ' + checkRes.received + ', given input: ' + v);
     }
   }, input);
 }
