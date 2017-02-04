@@ -2,6 +2,7 @@ var assert = require('../assert');
 var type = require('../type');
 var clone = require('../l/clone');
 var slice = require('../slice');
+var extend = require('../extend');
 //fn only accept one object as its parameter
 //paramsDescription's format:
 // {
@@ -80,6 +81,11 @@ function makeBuilder(fn, paramsDescription, options) {
   return builder;
 }
 
+makeBuilder.mixin = function(builder, mixins){
+  builder._builderProto = extend(builder._builderProto, mixins);
+  return builder;
+};
+
 module.exports = makeBuilder;
 
 function buildParams(paramsForBuild, descs, fnName) {
@@ -123,8 +129,23 @@ function buildParams(paramsForBuild, descs, fnName) {
 //     }
 //   });
 
-//   var clonedBuild = builder.a(1).c('sa').build(['build']).clone();
-//   console.log(clonedBuild.build());
-//   clonedBuild.b(2).make('asdad');
-//   // clonedBuild.d('').make();
+//   makeBuilder.mixin(builder, {
+//     ab: function(a, b){
+//       return this.a(a).b(b);
+//     },
+//     print: function(msg){
+//       return this.make(msg);
+//     }
+//   });
+//   var clonedBuild = builder.ab(1, 3).c('sa').build(['build']).clone();
+//   makeBuilder.mixin(clonedBuild, {
+//     log: function(){
+//       return this.print.apply(this, arguments);
+//     }
+//   });
+//   console.log(clonedBuild.a());
+//   console.log(clonedBuild.b());
+//   clonedBuild.ab(3,2).print('print');
+//   clonedBuild.ab(4,5).make('make');
+//   clonedBuild.ab(7,6).log('log');
 // }
