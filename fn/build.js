@@ -38,7 +38,9 @@ function makeBuilder(fn, paramsDescription, options) {
   var builderProto = {};
   builderProto[buildFnName] = function() {
     var params = buildParams(this._paramsForBuild, paramsDescription, options.fnName);
-    var args = [params].concat(slice(arguments));
+    var args = slice(arguments);
+    args.push(this[cloneFnName]());
+    args.unshift(params);
     return fn.apply(null, args);
   };
   builderProto[cloneFnName] = function() {
